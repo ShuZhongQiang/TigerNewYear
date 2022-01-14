@@ -9,9 +9,13 @@
 				width: 100%;
 			}
 			#monster {
-				width: 48px;
-				height: 48px;
-				background-color: red;
+				width: 108px;
+				height: 108px;
+				/* background-color: red; */
+				background:url(image/89pLAPBDvM.png) 0 0 no-repeat ;
+				background-size: 120% 148%;;
+				background-position: center center;
+				/* transform: rotateY(180deg); */
 				position: fixed;
 				top: 90px;
 				left: 0px;
@@ -20,16 +24,23 @@
 			  content:'';
 			  position:absolute;
 			  z-index:1;
-			  top:68px;
-			  left:4px;
-			  width:44px;
+			  top: 124px;
+			  left:12px;
+			  width:84px;
 			  height:10px;
-			  background:#eaeaea;
+			  background:#eb6969;
 			  border-radius:100%;
 			}
+			#monsterHP{
+				width: 128px; 
+				color: #FFFFFF;
+				margin-top: -30px;
+				text-align: center;
+				font-weight: bold;
+			}
 			#Launcher {
-				width: 108px;
-				height: 108px;
+				width: 128px;
+				height: 128px;
 				/* background-color: red; */
 				background: url(image/Launcher.png) 0 0 no-repeat;
 				/* background: url(allnormal.png); */
@@ -39,7 +50,6 @@
 				z-index: 9999;
 				position: fixed;
 				bottom: 0;
-				left: 46%;
 				-moz-transform-origin: 50% 100%;
 				-webkit-transform-origin:50% 100%;
 				-o-transform-origin:50% 100%;
@@ -85,6 +95,7 @@
 				100% {background-position: -256px -192px;}
 			}
 			body {
+				width: 100%;
 				background: url(image/tigerback.jpg) no-repeat center center fixed;
 				-webkit-background-size: cover;
 				-moz-background-size: cover;
@@ -124,6 +135,25 @@
 			    width: 8.5em;
 			    height: 8.5em;
 			    position: absolute;
+			}
+			#blessingLayer{
+				display: none;
+				position: fixed;
+				width: 100%;
+				height: auto;
+				left: 0;
+				top: 30%;
+				color: #fbff00;
+				background-color: rgb(145 11 11 / 63%);
+				text-align: center;
+				padding-top: 40px;
+				padding-bottom: 40px;
+			}
+			#showTime{
+				position: fixed;
+				left: 60px;
+				color: #FBFF00;
+				font-weight: bolder;
 			}
 			/*位置，颜色，大小都可调*/
 			.pos1 {
@@ -478,13 +508,24 @@
 		      </div>
 		  </div>
 		</div>
-		<button onclick="tooglePlay()" style="position: fixed;">打开声音</button >
+		<img id="soundIcon" src="image/nosound.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+		<div id="blessingLayer">
+			<h2>2022新年快乐</h2>
+			<p>
+				 您共花费了 <span id="blessingText"></span> 的时间击败了2022年的年兽，积攒了2022年365天的好福气！
+				
+			</p>
+			<p>
+				作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
+			</p>
+			<p>留言作者送祝福<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a></p>
+		</div>
 		<!--舞台-->
 		<div id="stage">
-		
+		<span id="showTime"></span>
 		<!--年兽-->
 		<div id="monster"  class="monster">
-			
+			<p id="monsterHP">2022福气:0天</p>
 		</div>
 		<!--发射器-->
 		<div id="Launcher">
@@ -494,12 +535,16 @@
 		</div>
 		<script>
 		//获取元素
+		var gameBeginTime = new Date().getTime();
+		var showTime = document.getElementById("showTime")
 		var wx = window.innerWidth; //窗口宽度
 		var wy = window.innerHeight; //窗口高度
 		var stage = document.getElementById('stage');
 		stage.style.height= wy + 'px'
 		//stage.style.backgroundColor = "#F08080"
+		var monsterHpTxt = 0; //  福气值
 		var monster = document.getElementById('monster'); //年兽
+		var monsterHP = document.getElementById("monsterHP");
 		var monsterX = 100; // 移动距离
 		var monsterY = lastMonsterY; // 移动高度
 		var lastMonsterY = 30;
@@ -507,9 +552,11 @@
 		var monsterDown = wy/2  * Math.random(); //落点
 		var mosterIsMove = true; //年兽是否移动
 		var Launcher = document.getElementById('Launcher'); //发射器
+		Launcher.style.left = wx/2 -Launcher.offsetWidth/2 + 'px';
 		var rect = Launcher.getBoundingClientRect();
 		var LauncherX = rect.left + (rect.right - rect.left) / 2;
 		var LauncherY =	rect.bottom;
+		var gameDuration = '00分00秒';
 		var x = 0;
 		var y = 0;
 		var l = 0;
@@ -525,10 +572,23 @@
 		var bulletSpeed = 10; // 子弹飞行速度
 		var createBulletInterval = null; // 创建子弹的定时器
 		var rotation = 0 ;// 发射角度
+		 // 时间格式化为x分y秒z
+		function formatTime(time) {
+		  let minute = Math.floor(time / 60000)
+		  let second = Math.floor(time % 60000 / 1000)
+		  return `${minute} 分 ${second} 秒`
+		};
 		(function animloop() {
+				
 		        monsterMove();
 				createBullet();
-		        window.requestAnimationFrame(animloop);
+				if(monsterHpTxt >= 365){
+					window.cancelAnimationFrame(animloop)
+					document.getElementById("blessingLayer").style.display="inline-block";
+					document.getElementById("blessingText").innerHTML = formatTime(gameDuration);
+				}else{
+					window.requestAnimationFrame(animloop);
+				}
 			
 		})();
 		function easeInOutExpo(x) {
@@ -537,9 +597,11 @@
 		//年兽移动
 		function monsterMove(){
 			// 更新游戏时间
-			//this.gameDuration = new Date().getTime() - this.gameBeginTime
-			
+			gameDuration = new Date().getTime() - gameBeginTime;
+			showTime.innerText = "游戏时间: "+formatTime(gameDuration);
 			if(mosterIsMove){
+				monster.style.transform = "rotateY(180deg)"; 
+				monsterHP.style.transform = "rotateY(180deg)"
 				monsterX += monsterSpeed;
 				progress = parseInt((monsterX + 100)/wx * 100)
 				if(progress>0 && progress<=30){
@@ -552,10 +614,11 @@
 				}
 				
 				if(monsterX + 100 >= wx){
-					
 					mosterIsMove = false;
 				}
 			}else{
+				monster.style.transform = ""; 
+				monsterHP.style.transform = ""
 				monsterX += -monsterSpeed;
 				progress = parseInt((wx - monsterX)/(wx - 100) * 100)
 				if(progress>0 && progress<=30){
@@ -566,8 +629,7 @@
 					monsterY = 230 - easeInOutExpo((progress-30)/40) * 100
 				}
 				
-				if(monsterX<=100){
-					
+				if(monsterX<30){
 					mosterIsMove = true;
 				}
 			}
@@ -644,7 +706,7 @@
 		window.onmouseup = function(){
 			up()
 		}
-		window.addEventListener('touchstart',function(e){
+		Launcher.addEventListener('touchstart',function(e){
 			down(e)
 		},{ passive: false });
 		window.addEventListener('touchmove',function(e){
@@ -661,9 +723,11 @@
 			// window.backMusic.currentTime = 127.2 // 背景音乐默认定位到舒缓片段
 			if (!isPlay) {
 				window.backMusic.play()
+				document.getElementById("soundIcon").src = "image/sound.png"
 				isPlay = true
 			} else {
 				window.backMusic.pause()
+				document.getElementById("soundIcon").src = "image/nosound.png"
 				isPlay = false
 			}
 		};
@@ -707,7 +771,7 @@
 					}		
 					//bullet.style.left = bullet.offsetLeft + 1 + 'px'
 		          // 如果子弹距离顶部的距离为年兽的高度时，判断子弹和年兽的水平位置是否重合
-		          if (bullet.offsetTop <= monster.offsetTop + monster.offsetHeight && bullet.offsetTop >= monster.offsetTop && bullet.offsetLeft >= monsterX  && bullet.offsetLeft <= monsterX + monster.offsetWidth) { //&& bullet.offsetLeft >= monsterX  && bullet.offsetLeft <= monsterX + monster.offsetWidth
+		          if (bullet.offsetTop <= monster.offsetTop + monster.offsetHeight/2 && bullet.offsetTop >= monster.offsetTop && bullet.offsetLeft >= monsterX  && bullet.offsetLeft <= monsterX + monster.offsetWidth) { //&& bullet.offsetLeft >= monsterX  && bullet.offsetLeft <= monsterX + monster.offsetWidth
 		            // 年兽掉血
 		            //this.nianshouHP -= this.damage
 		            playAudio('image/boom.wav');
@@ -721,16 +785,18 @@
 					imgF.style.left = bullet.offsetLeft + 'px';
 					imgF.style.top = bullet.offsetTop + 'px';
 					stage.appendChild(imgF);
-					monster.style.backgroundColor = "#FFE395";
+					monsterHP.style.color = "#FFE395";
+					monsterHpTxt = monsterHpTxt >= 365 ? 365 : monsterHpTxt + 1;
+					monsterHP.innerText="2022福气:"+monsterHpTxt+"天";
 					monsterSpeed = .5;
 					setTimeout(function(){
-						monster.style.backgroundColor = "red"
+						monsterHP.style.color = "#FFFFFF"
 						monsterSpeed = 1;
 						stage.removeChild(imgF)
 					}, 650); 
 		            stage.removeChild(bullet)
 		            window.cancelAnimationFrame(bulletMove)
-		          } else if (bullet.offsetTop <= 0) {
+		          } else if (bullet.offsetTop <= 0 || bullet.offsetLeft <= 0 || bullet.offsetLeft > wx) {
 		            stage.removeChild(bullet)
 		            window.cancelAnimationFrame(bulletMove)
 		          } else {
