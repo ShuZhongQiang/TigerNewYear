@@ -12,7 +12,7 @@
 				width: 108px;
 				height: 108px;
 				/* background-color: red; */
-				background:url(image/89pLAPBDvM.png) 0 0 no-repeat ;
+				background:url("https://bu.dusays.com/2022/01/17/fb22dbb7ded68.png") 0 0 no-repeat ;
 				background-size: 120% 148%;;
 				background-position: center center;
 				/* transform: rotateY(180deg); */
@@ -51,7 +51,7 @@
 				width: 128px;
 				height: 128px;
 				/* background-color: red; */
-				background: url(image/Launcher.png) 0 0 no-repeat;
+				background: url("https://bu.dusays.com/2022/01/17/fc030923f46f3.png") 0 0 no-repeat;
 				/* background: url(allnormal.png); */
 				background-size: 100% 100%;
 				background-position: center center;
@@ -62,6 +62,10 @@
 				-moz-transform-origin: 50% 100%;
 				-webkit-transform-origin:50% 100%;
 				-o-transform-origin:50% 100%;
+			}
+			.boomMoster{
+				 position: absolute;
+				 width: 64px;
 			}
 			.bullet {
 			  position: absolute;
@@ -78,7 +82,7 @@
 				position: absolute;
 				width: 64px;
 				height: 64px;
-				background: url(image/explode.png) 0 0 no-repeat;
+				background: url("https://bu.dusays.com/2022/01/17/d9062a4e91968.png") 0 0 no-repeat;
 				-webkit-animation-iteration-count: 1;/* 动画播放 */
 				-webkit-animation-timing-function:step-start;/* 马上跳到动画每一结束桢的状态 */
 				-webkit-animation-name: person-fast;
@@ -105,7 +109,7 @@
 			}
 			body {
 				width: 100%;
-				background: url(image/tigerback.jpg) no-repeat center center fixed;
+				background: url("https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg") no-repeat center center fixed;
 				-webkit-background-size: cover;
 				-moz-background-size: cover;
 				-o-background-size: cover;
@@ -145,6 +149,25 @@
 			    height: 8.5em;
 			    position: absolute;
 			}
+			#menu{
+				display:block;
+				position: fixed;
+				width: 100%;
+				height: auto;
+				left: 0;
+				top: 30%;
+				color: #fbff00;
+				background-color: rgb(145 11 11 / 63%);
+				text-align: center;
+				padding-top: 40px;
+				padding-bottom: 40px;
+			}
+			#menu button{
+				background-color: #ffa622;
+				color: #FFFFFF;
+				border: 1px solid #ffa622;
+				margin: 2%;
+			}
 			#blessingLayer{
 				display: none;
 				position: fixed;
@@ -162,7 +185,6 @@
 				display: none;
 				width: 64px;
 				position: fixed;
-				z-index: 9999;
 			}
 			#showTime{
 				position: fixed;
@@ -523,7 +545,16 @@
 		      </div>
 		  </div>
 		</div>
-		<img id="soundIcon" src="image/nosound.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+		<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+		<div id="menu">
+			<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
+			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加射击速度和发射频率</p>
+			<p>2.年兽随机扔出炸弹，打中炸弹5下会减少射速和发射频率</p>
+			<p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p>
+			<div>
+				<button onclick="startGame()">开始游戏</button><button onclick="tooglePlay()">打开声音</button>
+			</div>
+		</div>
 		<div id="blessingLayer">
 			<h2>2022新年快乐</h2>
 			<p>
@@ -534,7 +565,7 @@
 			</p>
 			<p>留言作者送祝福<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a></p>
 		</div>
-		<img id="blessingProp" src="image/blessing.png"/>
+		<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
 		<!--舞台-->
 		<div id="stage">
 		<span id="showTime"></span>
@@ -552,7 +583,14 @@
 		</div>
 		
 		</div>
+		<script src="js/howler.min.js"></script>
 		<script>
+		var u = navigator.userAgent;
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		var sound = new Howl({
+		  src: ['https://m10.music.126.net/20220117010555/6922592d63b2dc09843105800e75dffe/yyaac/545d/515a/5158/c73402da25f005001436f2e5a7c7b15c.m4a'],
+		  html5: true
+		});
 		//获取元素
 		var gameBeginTime = new Date().getTime();
 		var showTime = document.getElementById("showTime")
@@ -589,26 +627,27 @@
 		var isDown = false; //鼠标是否在按下
 		var isPlay = false; //是否播放
 		var lastBulletTime = 0; // 上次发射子弹时间
-		var frequency = 2; // 发射子弹频率
+		var frequency = 1; // 发射子弹频率
 		var bulletSpeed = 10; // 子弹飞行速度
 		var createBulletInterval = null; // 创建子弹的定时器
 		var rotation = 0 ;// 发射角度
 		var doubleHit = 0;
 		var showProp = 1; // 1 为不展示 2 为展示 0 为展示没有消失
 		var blessingProp = document.getElementById("blessingProp");
+		var blessingY = 0;
+		var blessingNum = 0;
 		 // 时间格式化为x分y秒z
 		function formatTime(time) {
 		  let minute = Math.floor(time / 60000)
 		  let second = Math.floor(time % 60000 / 1000)
 		  return `${minute} 分 ${second} 秒`
 		};
-		(function animloop() {
-				if(showProp == 2){
-					showProp = 0;
-					blessingProp.style.top = parseInt(Math.random()*((wy-150)-150+1)+150,10) + 'px';
-					blessingProp.style.left = parseInt(Math.random()*((wx-100)-100+1)+100,10) + 'px';
-					blessingProp.style.display = "block";
-				}
+		function startGame(){
+			document.getElementById("menu").style.display = "none";
+			animloop();
+		};
+		function animloop(){
+				blessingMove();
 		        monsterMove();
 				if(monsterHpTxt >= 365){
 					window.cancelAnimationFrame(animloop)
@@ -618,15 +657,33 @@
 					window.requestAnimationFrame(animloop);
 				}
 			
-		})();
+		};
 		function easeInOutExpo(x) {
 		    return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 8) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
-		}
+		};
+		function blessingMove(){
+			if(showProp == 2){
+				showProp = 0;
+				//blessingProp.style.top = parseInt(Math.random()*((wy-200)-200+1)+200,10) + 'px';、
+				blessingProp.style.left = parseInt(Math.random()*((wx-10)-10+1)+10,10) + 'px';
+				//blessingProp.style.left = 100+"px"
+				blessingProp.style.display = "block";
+			}else if(showProp == 0){
+				if(blessingY > wy){
+					blessingY = 0;
+					showProp = 1; 
+					blessingNum = 0; 
+					blessingProp.style.display = "none";
+				}
+				blessingY += 1;
+				blessingProp.style.top = blessingY + "px"
+			}
+		};
 		//年兽移动
 		function monsterMove(){
 			// 更新游戏时间
 			gameDuration = new Date().getTime() - gameBeginTime;
-			showTime.innerText = "游戏时间: "+formatTime(gameDuration);
+			showTime.innerText = "游戏时间: "+formatTime(gameDuration) + " 射速：" + frequency;
 			if(mosterIsMove){
 				monster.style.transform = "rotateY(180deg)"; 
 				monsterText.style.transform = "rotateY(180deg)"
@@ -667,7 +724,7 @@
 		}
 		//鼠标按下事件
 		function down(e){
-			createBullet();
+			
 			 //获取x坐标和y坐标
 			if(e.touches){
 			    let touch = e.touches[0];
@@ -683,6 +740,7 @@
 		    t = Launcher.offsetTop;
 		    //开关打开
 		    isDown = true;
+			createBullet()
 		    //设置样式  
 		    Launcher.style.cursor = 'move';
 		}
@@ -703,11 +761,11 @@
 			dx = nx-LauncherX;
 			dy = ny-LauncherY; 
 			rotation = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
-			// 只能在 -45 ， 45 间移动
-			if(rotation<=-45 || rotation >180){
-				rotation = -45
-			}else if(rotation >=45 && rotation <180){
-				rotation = 45
+			// 只能在 -75 ， 75 间移动
+			if(rotation<=-75 || rotation >180){
+				rotation = -75
+			}else if(rotation >=75 && rotation <180){
+				rotation = 75
 			}
 			//console.log(rotation)
 			Launcher.style['transform'] = Launcher.style['-webkit-transform'] = 'rotate(' + rotation + 'deg)'
@@ -719,6 +777,7 @@
 		}
 		//鼠标抬起事件
 		function up(){
+			audio.pause()
 		    //开关关闭
 		    isDown = false;
 		    Launcher.style.cursor = 'default';
@@ -745,32 +804,68 @@
 			up()
 		},{ passive: false });
 		function tooglePlay() {
-			window.backMusic = new Audio()
-			// window.backMusic.src = require('../assets/mp3/back.mp3')
-			// window.backMusic.loop = true
-			// window.backMusic.load()
-			// window.backMusic.currentTime = 127.2 // 背景音乐默认定位到舒缓片段
+			
+			// window.backMusic = new Audio();
+			// window.backMusic.src = "image/back.mp3";
+			// window.backMusic.loop = true;
+			// window.backMusic.load();
+			//window.backMusic.currentTime = 127.2; // 背景音乐默认定位到舒缓片段
+			
 			if (!isPlay) {
-				window.backMusic.play()
-				document.getElementById("soundIcon").src = "image/sound.png"
+				//window.backMusic.play()
+				sound.play();
+				document.getElementById("soundIcon").src = "https://bu.dusays.com/2022/01/17/ad7499aaeb2c8.png";
 				isPlay = true
 			} else {
-				window.backMusic.pause()
-				document.getElementById("soundIcon").src = "image/nosound.png"
+				//window.backMusic.pause()
+				sound.pause();
+				document.getElementById("soundIcon").src = "https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png";
 				isPlay = false
 			}
 		};
-		function playAudio(src) {
+		var audio = new Howl({
+			src:["image/pu.m4a"],
+			html5: true,
+			preload : true,
+			volume: 1
+		});
+		var audio2 = new Howl({
+			src:["image/boom.wav"],
+			html5: true,
+			preload : true,
+			volume: 1
+		});
+		function playAudio() {
 			if (isPlay) {
-				const audio = new Audio()
-				audio.src = src
-				audio.load()
-				audio.volume = .5
-				audio.play()
+				if(isiOS){
+					if(!audio.playing()){audio.play()}
+				}else{
+					audio.play()
+				}
 			}
 		};
+		function playAudio2() {
+			if (isPlay) {
+				if(isiOS){
+					if(!audio2.playing()){audio2.play()}
+				}else{
+					audio2.play()
+					}
+				}
+		};
+		//生成小年兽
+		function boomMoster(){
+			var bullet = document.createElement('div');
+			bullet.className = 'boomMoster';
+			bullet.style.left = parseInt(Math.random()*((wx-10)-10+1)+10,10) + 'px';
+		}
 		//生成子弹
-		function createBullet () {
+		function createBullet() {
+				if(isDown == true){
+					window.requestAnimationFrame(createBullet)
+				}else{
+					window.cancelAnimationFrame(createBullet)
+				}
 		      // 子弹
 		      var now = new Date().getTime()
 		      if (now - lastBulletTime > (1000 / frequency)) {
@@ -784,7 +879,7 @@
 				bullet.style.top =  rotation < 0? wy - Launcher.offsetHeight - (Launcher.offsetHeight - 56) * Math.sin(rotation/180 * Math.PI) + 'px' : wy - Launcher.offsetHeight + (Launcher.offsetHeight - 56) * Math.sin(rotation/180 * Math.PI) + 'px'; // 
 				bullet.speen = rotation * .2
 				stage.appendChild(bullet);
-				playAudio('image/pu.mp3');
+				playAudio();
 		        // 子弹移动
 		        function bulletMove(){
 		            bullet.style.top = bullet.offsetTop - bulletSpeed + 'px'
@@ -804,7 +899,7 @@
 						bullet.offsetLeft <= monsterX + monster.offsetWidth) 
 				  {
 		            // 年兽掉血
-		            playAudio('image/boom.wav');
+		            playAudio2();
 		            // 子弹消失
 					var imgF = document.createElement('div');
 					imgF.className = 'imgF';
@@ -816,11 +911,29 @@
 					doubleHitObj.innerHTML = "连击："+doubleHit;
 					doubleHit > 1 ? doubleHitObj.style.display = "inline-block" : doubleHitObj.style.display = "none";
 					//doubleHit % 2 == 0 ? showProp > 0 ? showProp = 2 :showProp = 1;
-					if(doubleHit % 2 == 0){
-						if(showProp > 0){
-							showProp = 2;
-						}else{
-							showProp = 0;
+					if(frequency <= 2){
+						if(doubleHit % 2 == 0){
+							if(showProp > 0){
+								showProp = 2;
+							}else{
+								showProp = 0;
+							}
+						}
+					} else if(frequency > 2 && frequency <= 5){
+						if(doubleHit % 5 == 0){
+							if(showProp > 0){
+								showProp = 2;
+							}else{
+								showProp = 0;
+							}
+						}
+					} else if(frequency > 5 && frequency <= 10){
+						if(doubleHit % 10 == 0){
+							if(showProp > 0){
+								showProp = 2;
+							}else{
+								showProp = 0;
+							}
 						}
 					}
 					monsterHpTxt = monsterHpTxt >= 365 ? 365 : monsterHpTxt + 1;
@@ -843,9 +956,16 @@
 						bullet.offsetLeft <= blessingProp.offsetLeft + monster.offsetWidth/2){
 					    var imgF = document.createElement('div');
 						doubleHit += 1;
-						showProp = 1;
-						frequency >= 10 ? frequency += 1 : frequency = 10
-						blessingProp.style.display = "none";
+						blessingNum += 1;
+						//console.log(blessingNum)
+						if(blessingNum >= 3){
+							//audio.rate(10)
+							frequency <= 10 ? frequency += 1 : frequency = 10;
+							blessingY = 0;
+							blessingNum = 0; 
+							showProp = 1;
+							blessingProp.style.display = "none";
+						}
 					    imgF.className = 'imgF';
 					    imgF.style.left = bullet.offsetLeft + 'px';
 					    imgF.style.top = bullet.offsetTop + 'px';
@@ -860,11 +980,11 @@
 		        }
 		        bulletMove()
 		        lastBulletTime = now
-				console.log(lastBulletTime)
+				//console.log(lastBulletTime)
 				//setTimeout(function(){doubleHitObj.style.display = "none",doubleHit = 0},2000);
 		      }
 		    };
-		
+			//createBullet();
 		
 	
 		</script>
