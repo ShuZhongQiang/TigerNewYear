@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+		<title>炸年兽大作战</title>
+		<link rel="stylesheet" href="css/Fireworks.css" type="text/css">
+		<link rel="stylesheet" href="css/index.css" type="text/css">
+	</head>
+	<body>
+		<div id="container">
+		  <div class="firework-grp">
+		      <div class="firework pos1 ">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos2 delay1">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos3 delay2">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos4 ">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+		<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+		<div id="menu">
+			<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
+			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加射击速度和发射频率</p>
+			<p>2.年兽随机扔出炸弹，打中炸弹5下会减少射速和发射频率</p>
+			<!-- <p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p> -->
+			<div>
+				<button onclick="startGame()">开始游戏</button><button onclick="tooglePlay()">打开声音</button>
+			</div>
+		</div>
+		<div id="blessingLayer">
+			<h2>2022新年快乐</h2>
+			<p>
+				 您共花费了 <span id="blessingText"></span> 的时间击败了2022年的年兽，积攒了2022年365天的好福气！
+			</p>
+			<p>
+				作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
+			</p>
+			<p>留言作者送祝福<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a></p>
+		</div>
+		<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
+		<!--舞台-->
+		<div id="stage">
+			<span id="showTime"></span>
+			<!--年兽-->
+			<div id="monster"  class="monster">
+				<div id="monsterText">
+					<p id="monsterHP">2022福气:0天</p>
+					<p id="doubleHit">0次</p>
+				</div>
+			</div>
+			<!--发射器-->
+			<div id="Launcher">
+				<div id="LauncherHead"></div>
+			</div>
+		</div>
+		<script src="js/howler.min.js"></script>
+		<script src="js/index.js"></script>
+	</body>
+</html>

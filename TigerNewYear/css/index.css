@@ -1,0 +1,187 @@
+#stage{
+	width: 100%;
+}
+#monster {
+	width: 108px;
+	height: 108px;
+	/* background-color: red; */
+	background:url("https://bu.dusays.com/2022/01/17/fb22dbb7ded68.png") 0 0 no-repeat ;
+	background-size: 120% 148%;;
+	background-position: center center;
+	/* transform: rotateY(180deg); */
+	position: fixed;
+	top: 90px;
+	left: 0px;
+}
+.monster:after{
+  content:'';
+  position:absolute;
+  z-index:1;
+  top: 124px;
+  left:12px;
+  width:84px;
+  height:10px;
+  background:#eb6969;
+  border-radius:100%;
+}
+#monsterHP{
+	width: 128px; 
+	color: #FFFFFF;
+	margin-top: -30px;
+	text-align: center;
+	font-weight: bold;
+}
+#doubleHit{
+	display: none;
+	width: 128px;
+	color: #FFEE00;
+	margin-top: -10px;
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+}
+#Launcher {
+	width: 128px;
+	height: 128px;
+	/* background-color: red; */
+	background: url("https://bu.dusays.com/2022/01/17/fc030923f46f3.png") 0 0 no-repeat;
+	/* background: url(allnormal.png); */
+	background-size: 100% 100%;
+	background-position: center center;
+	overflow: auto;
+	z-index: 9999;
+	position: fixed;
+	bottom: 0;
+	-moz-transform-origin: 50% 100%;
+	-webkit-transform-origin:50% 100%;
+	-o-transform-origin:50% 100%;
+}
+.boomMoster{
+	 position: absolute;
+	 width: 64px;
+}
+.bullet {
+  position: absolute;
+  width: 10px;
+  height: 16px;
+  background-image: linear-gradient(to bottom, #ffee00, #ffe395);
+  /* border-radius: 50%; */
+  box-shadow: 0 0 5px #fff;
+  -moz-transform-origin: 50% 50%;
+  -webkit-transform-origin:50% 50%;
+  -o-transform-origin:50% 50%;
+}
+.imgF {
+	position: absolute;
+	width: 64px;
+	height: 64px;
+	background: url("https://bu.dusays.com/2022/01/17/d9062a4e91968.png") 0 0 no-repeat;
+	-webkit-animation-iteration-count: 1;/* 动画播放 */
+	-webkit-animation-timing-function:step-start;/* 马上跳到动画每一结束桢的状态 */
+	-webkit-animation-name: person-fast;
+	-webkit-animation-duration: 650ms;
+}
+@-webkit-keyframes person-fast{/* 快 */
+	0% {background-position: 0 0;}
+	6.25% {background-position: -64px 0;}
+	12.5% {background-position: -128px 0;}
+	18.75% {background-position: -192px 0;}
+	25% {background-position: -256px 0;}
+	31.25% {background-position: -64px -64px;}
+	37.5% {background-position: -128px -64px;}
+	43.75% {background-position: -192px -64px;}
+	50% {background-position: -256px -64px;}
+	56.25% {background-position: -64px -128px;}
+	62.50% {background-position: -128px -128px;}
+	69.75% {background-position: -192px -128px;}
+	75.25% {background-position: -256px -128px;}
+	81.25% {background-position: -64px -192px;}
+	87.5% {background-position: -128px -192px;}
+	93.75% {background-position: -192px -192px;}
+	100% {background-position: -256px -192px;}
+}
+body {
+	width: 100%;
+	background: url("https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	overflow-x:hidden;
+	overflow-y:hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#LauncherHead{
+	background-color: #F4BD0A;
+	z-index: 9999;
+}
+#container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+	width: 100%;
+	height: 100%;
+}
+.firework-grp {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+.firework {
+	font-size: 10px;
+	display: block;
+	width: 8.5em;
+	height: 8.5em;
+	position: absolute;
+}
+#menu{
+	display:block;
+	position: fixed;
+	width: 100%;
+	height: auto;
+	left: 0;
+	top: 30%;
+	color: #fbff00;
+	background-color: rgb(145 11 11 / 63%);
+	text-align: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+#menu button{
+	background-color: #ffa622;
+	color: #FFFFFF;
+	border: 1px solid #ffa622;
+	margin: 2%;
+}
+#blessingLayer{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: auto;
+	left: 0;
+	top: 30%;
+	color: #fbff00;
+	background-color: rgb(145 11 11 / 63%);
+	text-align: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+#blessingProp{
+	display: none;
+	width: 64px;
+	position: fixed;
+}
+#showTime{
+	position: fixed;
+	left: 60px;
+	color: #FBFF00;
+	font-weight: bolder;
+}
