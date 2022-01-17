@@ -174,12 +174,15 @@
 				width: 100%;
 				height: auto;
 				left: 0;
-				top: 30%;
+				top: 20%;
 				color: #fbff00;
 				background-color: rgb(145 11 11 / 63%);
 				text-align: center;
 				padding-top: 40px;
 				padding-bottom: 40px;
+			}
+			#blessingLayer p{
+				margin: 10px;
 			}
 			#blessingProp{
 				display: none;
@@ -483,6 +486,31 @@
 			    }
 			}
 		</style>
+		<style>
+		.bullet-chat-wrap {
+		  position: fixed;
+		  top: 0;
+		  bottom: 0;
+		  right: 0;
+		  left: 0;
+		  z-index: -1;
+		}
+		.bullet-chat {
+		  position: absolute;
+		  white-space: nowrap;
+		  display: flex;
+		  align-items: center;
+		  color: rgba(255, 255, 255, .5);
+		  font-size: 16px;
+		  /* font-weight: bold; */
+		}
+		.layerInput{
+			width: 60%;
+		}
+		.layerSubmit{
+			
+		}
+		</style>
 	</head>
 	<body scroll="no">
 		<div id="container">
@@ -563,7 +591,27 @@
 			<p>
 				作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
 			</p>
-			<p>留言作者送祝福<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a></p>
+			<p>
+				上传成绩并送弹幕祝福吧：
+			</p>
+			<form>
+			  <label for="fname">尊姓大名：</label>
+			  <input id="name" class="layerInput" required="required"/><br>
+			  <label for="lname">祝福弹幕：</label>
+			  <input id="words" class="layerInput"  required="required"/><br>
+			  <!-- <input class="layerSubmit" type="submit" value="提交" onclick="saveInfo"> -->
+			</form> 
+			<p>
+				<button onclick="saveInfo()">提交</button>
+				<button>查看榜单</button>前往作者主页<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a>
+			</p>
+			<!-- <p>
+				尊姓大名：<input id="name" class="layerInput" required="required"/>
+			</p>
+			<p>
+				祝福弹幕：<input id="words" class="layerInput"  required="required"/>
+			</p> -->
+			
 		</div>
 		<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
 		<!--舞台-->
@@ -572,7 +620,7 @@
 		<!--年兽-->
 		<div id="monster"  class="monster">
 			<div id="monsterText">
-				<p id="monsterHP">2022福气:0天</p>
+				<p id="monsterHP"></p>
 				<p id="doubleHit">0次</p>
 			</div>
 			
@@ -583,12 +631,14 @@
 		</div>
 		
 		</div>
+		<div id="bulletChat" class="bullet-chat-wrap"></div>
 		<script src="js/howler.min.js"></script>
+		<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script>
 		<script>
 		var u = navigator.userAgent;
 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 		var sound = new Howl({
-		  src: ['https://m10.music.126.net/20220117010555/6922592d63b2dc09843105800e75dffe/yyaac/545d/515a/5158/c73402da25f005001436f2e5a7c7b15c.m4a'],
+		  src: ['https://m701.music.126.net/20220117233757/76cc1af76e4e9cf119ff8227155338fb/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/12680214382/736d/af82/a18d/c5edd75f15dd6ae85729ed3a4cf53294.m4a'],
 		  html5: true
 		});
 		//获取元素
@@ -636,6 +686,8 @@
 		var blessingProp = document.getElementById("blessingProp");
 		var blessingY = 0;
 		var blessingNum = 0;
+		var isStartGame = false;
+		var saveFlag = false;
 		 // 时间格式化为x分y秒z
 		function formatTime(time) {
 		  let minute = Math.floor(time / 60000)
@@ -643,6 +695,7 @@
 		  return `${minute} 分 ${second} 秒`
 		};
 		function startGame(){
+			isStartGame = true;
 			document.getElementById("menu").style.display = "none";
 			animloop();
 		};
@@ -650,7 +703,8 @@
 				blessingMove();
 		        monsterMove();
 				if(monsterHpTxt >= 365){
-					window.cancelAnimationFrame(animloop)
+					isStartGame = false;
+					window.cancelAnimationFrame(animloop);
 					document.getElementById("blessingLayer").style.display="inline-block";
 					document.getElementById("blessingText").innerHTML = formatTime(gameDuration);
 				}else{
@@ -724,25 +778,26 @@
 		}
 		//鼠标按下事件
 		function down(e){
-			
-			 //获取x坐标和y坐标
-			if(e.touches){
-			    let touch = e.touches[0];
-				x = touch.clientX;
-				y = touch.clientY;
-			}else{
-				x = e.clientX;
-				y = e.clientY;
+			if(isStartGame){
+				//获取x坐标和y坐标
+				if(e.touches){
+				    let touch = e.touches[0];
+					x = touch.clientX;
+					y = touch.clientY;
+				}else{
+					x = e.clientX;
+					y = e.clientY;
+				}
+				e.preventDefault();
+				//获取左部和顶部的偏移量
+				l = Launcher.offsetLeft;
+				t = Launcher.offsetTop;
+				//开关打开
+				isDown = true;
+				createBullet()
+				//设置样式  
+				Launcher.style.cursor = 'move';
 			}
-			e.preventDefault();
-		    //获取左部和顶部的偏移量
-		    l = Launcher.offsetLeft;
-		    t = Launcher.offsetTop;
-		    //开关打开
-		    isDown = true;
-			createBullet()
-		    //设置样式  
-		    Launcher.style.cursor = 'move';
 		}
 		//鼠标移动
 		function move(e){
@@ -985,8 +1040,121 @@
 		      }
 		    };
 			//createBullet();
-		
-	
+			var blessingData = [];
+			const { Query, User } = AV;
+			var APP_ID = '1503RVl8u0Sqp7ssKnVDiIJi-gzGzoHsz';
+			var APP_KEY = 'avy3KAfLc6xrGxRxdOMrDvAG';
+			var SERVER_URL = "https://1503rvl8.lc-cn-n1-shared.com";
+			AV.init({
+				appId: APP_ID,
+				appKey: APP_KEY,
+				serverURL: SERVER_URL
+			})
+			var query = new AV.Query('NewYearMessage');
+			query.find().then(function(e){
+				blessingData = e.map( item => {
+					name = item.attributes.name
+					words = item.attributes.words
+					return {'name':name,'words':words}
+				}) //attributes
+				showBullet();
+			});
+			// var blessingData = [
+			//   {
+			// 	"name": "许昌人民",
+			// 	"value": "祝全国人民新春快乐，万事如意"
+			//   },
+			//   {
+			// 	"name": "河南人民",
+			// 	"value": "祝全国华人新年快乐"
+			//   }
+			// ];
+			var ballistic = 0; // 弹道数量
+			var barrageSpeed = 2; // 弹幕速度
+			var bulletInterval = [100, 300]; // 弹幕间隔
+			var barrageBlock = document.getElementById("bulletChat")
+			/**
+			 * @description: 添加弹幕
+			 * @param {*} index 弹道索引
+			 * @return {*}
+			 */
+			function showBullet(){
+			  // 根据屏幕高度和弹幕高度计算弹道数量
+			  // let clientHeight = this.screenHeight
+			  // let ballisticCount = Math.floor(clientHeight / this.bulletHeight)
+			  // let ballisticArr = Array(ballisticCount).fill(1).map((item, index) => {
+			  //   return index
+			  // })
+			  let ballisticArr = [0, 1, 2, 3, 4, 5]
+			  // 按随机顺序在所有的弹道添加弹幕
+			  let ballisticLaunch = () => {
+				let randomIndex = Math.floor(Math.random() * ballisticArr.length)
+				let ballisticIndex = ballisticArr.splice(randomIndex, 1)[0]
+				barrage(ballisticIndex)
+				if (ballisticArr.length > 0) {
+				  setTimeout(ballisticLaunch, Math.random() * 1000)
+				}
+			  }
+			  ballisticLaunch()
+			  // this.createBullet(2)
+			};
+			function barrage(index){
+			  let bullet = document.createElement('div')
+			  let bulletHeight = wy / 20
+			  bullet.className = 'bullet-chat'
+			  bullet.style.left = wx + 'px'
+			  bullet.style.top = index * bulletHeight + 50 + 'px'
+			  bullet.createNext = false // 是否已创建下一个弹幕
+			  bullet.nextSpace = Math.random() * (bulletInterval[1] - bulletInterval[0]) + bulletInterval[0] // 下一个弹幕间隔
+			  // 从弹幕库随机取弹幕
+			  let dataLength = blessingData.length
+			  let randomIndex = Math.floor(Math.random() * dataLength)
+			  let blessing = blessingData[randomIndex]
+			  bullet.innerText = blessing.name + "：" + blessing.words
+			  barrageBlock.appendChild(bullet)
+				
+			  // 弹幕移动
+			  let bulletMove = () => {
+				bullet.style.left = bullet.offsetLeft - barrageSpeed + 'px'
+				if (!bullet.createNext) {
+				  // 如果弹幕距离屏幕右侧距离超出弹幕间隔，则加载下一条弹幕
+				  if (bullet.offsetLeft < (wx - bullet.offsetWidth - bullet.nextSpace)) {
+					barrage(index)
+					bullet.createNext = true
+				  }
+				}
+				
+				// 如果弹幕距离右侧距离大于等于屏幕宽度，则移除弹幕
+				if (bullet.offsetLeft < (-bullet.offsetWidth)) {
+				  barrageBlock.removeChild(bullet)
+				} else {
+				  requestAnimationFrame(bulletMove)
+				}
+			  }
+			  bulletMove()
+			}
+			function saveInfo(){
+				if(!saveFlag){
+					let name =  document.getElementById("name").value
+					let words = document.getElementById("words").value
+					let NewYearMessage = AV.Object.extend('NewYearMessage');
+					let newYearMessage = new NewYearMessage();
+					newYearMessage.save({
+						words:words,
+						name:name
+					}).then(function(e){
+						alert('添加成功！')
+						saveFlag = true;
+						query.find().then(function(e){
+							blessingData = e.map( item => {
+								name = item.attributes.name
+								words = item.attributes.words
+								return {'name':name,'words':words}
+							}) //attributes
+						});
+					});
+				}
+			}
 		</script>
 	</body>
 </html>
