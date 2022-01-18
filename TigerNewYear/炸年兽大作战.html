@@ -63,16 +63,13 @@
 				-webkit-transform-origin:50% 100%;
 				-o-transform-origin:50% 100%;
 			}
-			.boomMoster{
-				 position: absolute;
-				 width: 64px;
-			}
 			.bullet {
 			  position: absolute;
 			  width: 10px;
 			  height: 16px;
 			  background-image: linear-gradient(to bottom, #ffee00, #ffe395);
 			  /* border-radius: 50%; */
+			  /* background-size: 16px; */
 			  box-shadow: 0 0 5px #fff;
 			  -moz-transform-origin: 50% 50%;
 			  -webkit-transform-origin:50% 50%;
@@ -188,6 +185,18 @@
 				display: none;
 				width: 64px;
 				position: fixed;
+			}
+			#boomMoster{
+				position: absolute;
+				display: none;
+				top: 10px;
+				left: 100px;
+				width: 64px;
+				height: 64px;
+				background: url("https://bu.dusays.com/2022/01/17/1d8422032171d.png") 20px 20px no-repeat;
+				z-index: 9999px;
+				background-position: 6px 6px;
+				background-size: 180px;
 			}
 			#showTime{
 				position: fixed;
@@ -573,14 +582,18 @@
 		      </div>
 		  </div>
 		</div>
+		<div id="boomMoster"></div>
 		<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
 		<div id="menu">
 			<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
-			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加射击速度和发射频率</p>
-			<p>2.年兽随机扔出炸弹，打中炸弹5下会减少射速和发射频率</p>
-			<p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p>
+			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加子弹发射频率</p>
+			<p>2.年兽随机扔出小年兽，没有打中小年兽会减少子弹发射频率</p>
+			<p>3.游戏结束后可以提交自己的成绩到排行榜，和发送弹幕祝福哦</p>
+			<!-- <p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p> -->
 			<div>
-				<button onclick="startGame()">开始游戏</button><button onclick="tooglePlay()">打开声音</button>
+				<button onclick="startGame()">开始游戏</button>
+				<button onclick="tooglePlay()">查看榜单</button>
+				<button onclick="tooglePlay()">打开声音</button>
 			</div>
 		</div>
 		<div id="blessingLayer">
@@ -638,11 +651,11 @@
 		var u = navigator.userAgent;
 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 		var sound = new Howl({
-		  src: ['https://m701.music.126.net/20220117233757/76cc1af76e4e9cf119ff8227155338fb/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/12680214382/736d/af82/a18d/c5edd75f15dd6ae85729ed3a4cf53294.m4a'],
+		  src: ['http://music.163.com/song/media/outer/url?id=1911281371.mp3'],
 		  html5: true
 		});
 		//获取元素
-		var gameBeginTime = new Date().getTime();
+		var gameBeginTime = '';
 		var showTime = document.getElementById("showTime")
 		var wx = window.innerWidth; //窗口宽度
 		var wy = window.innerHeight; //窗口高度
@@ -679,6 +692,7 @@
 		var lastBulletTime = 0; // 上次发射子弹时间
 		var frequency = 1; // 发射子弹频率
 		var bulletSpeed = 10; // 子弹飞行速度
+		var bulletHurt = 1; //伤害
 		var createBulletInterval = null; // 创建子弹的定时器
 		var rotation = 0 ;// 发射角度
 		var doubleHit = 0;
@@ -688,6 +702,10 @@
 		var blessingNum = 0;
 		var isStartGame = false;
 		var saveFlag = false;
+		var boomMoster = document.getElementById("boomMoster");
+		var boomMosterY = 0;
+		var boomMosterNum = 0;
+		var isBoomMoster = 1;// 1 为不展示 2 为展示 0 为展示没有消失
 		 // 时间格式化为x分y秒z
 		function formatTime(time) {
 		  let minute = Math.floor(time / 60000)
@@ -696,14 +714,18 @@
 		};
 		function startGame(){
 			isStartGame = true;
+			gameBeginTime = new Date().getTime();
 			document.getElementById("menu").style.display = "none";
 			animloop();
 		};
 		function animloop(){
 				blessingMove();
+				boomMosterMove();
 		        monsterMove();
 				if(monsterHpTxt >= 365){
 					isStartGame = false;
+					boomMoster.style.display = "none";
+					blessingProp.style.display = "none";
 					window.cancelAnimationFrame(animloop);
 					document.getElementById("blessingLayer").style.display="inline-block";
 					document.getElementById("blessingText").innerHTML = formatTime(gameDuration);
@@ -715,6 +737,28 @@
 		function easeInOutExpo(x) {
 		    return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 8) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
 		};
+		//生成小年兽
+		function boomMosterMove(){
+			// var boomMoster = document.createElement('div');
+			// boomMoster.className = 'boomMoster';
+			// boomMoster.style.left = parseInt(Math.random()*((wx-10)-10+1)+10,10) + 'px';
+			if(isBoomMoster == 2){
+				isBoomMoster = 0;
+				boomMoster.style.left = parseInt(Math.random()*((wx-10)-10+1)+10,10) + 'px';
+				//blessingProp.style.left = 100+"px"
+				boomMoster.style.display = "block";
+			}else if(isBoomMoster == 0){
+				if(boomMosterY > wy){
+					isBoomMoster = 1;
+					boomMosterY = 0;
+					boomMosterNum = 0; 
+					frequency = 1;
+					boomMoster.style.display = "none";
+				}
+				frequency <= 2 ? boomMosterY += 1 : boomMosterY += 2;
+				boomMoster.style.top = boomMosterY + "px"
+			}
+		}
 		function blessingMove(){
 			if(showProp == 2){
 				showProp = 0;
@@ -729,7 +773,7 @@
 					blessingNum = 0; 
 					blessingProp.style.display = "none";
 				}
-				blessingY += 1;
+				frequency <= 2 ? blessingY += 1 : blessingY += 2;
 				blessingProp.style.top = blessingY + "px"
 			}
 		};
@@ -737,7 +781,16 @@
 		function monsterMove(){
 			// 更新游戏时间
 			gameDuration = new Date().getTime() - gameBeginTime;
-			showTime.innerText = "游戏时间: "+formatTime(gameDuration) + " 射速：" + frequency;
+			if(Math.floor(gameDuration % 60000 / 1000) % 20 == 0 && isBoomMoster == 1){
+				isBoomMoster = 2
+			} ;
+			if(bulletHurt > 1){
+				showTime.style.color = "#97caff";
+				showTime.innerText = "游戏时间: "+formatTime(gameDuration) + " 射速：" + frequency + " buff伤害：" + bulletHurt;
+			}else{
+				showTime.style.color = "#FBFF00";
+				showTime.innerText = "游戏时间: "+formatTime(gameDuration) + " 射速：" + frequency;
+			}
 			if(mosterIsMove){
 				monster.style.transform = "rotateY(180deg)"; 
 				monsterText.style.transform = "rotateY(180deg)"
@@ -908,12 +961,6 @@
 					}
 				}
 		};
-		//生成小年兽
-		function boomMoster(){
-			var bullet = document.createElement('div');
-			bullet.className = 'boomMoster';
-			bullet.style.left = parseInt(Math.random()*((wx-10)-10+1)+10,10) + 'px';
-		}
 		//生成子弹
 		function createBullet() {
 				if(isDown == true){
@@ -929,6 +976,11 @@
 				//console.log(Launcher.offsetHeight)
 				//console.log(Launcher.offsetHeight * Math.cos(rotation/180 * Math.PI))
 				//console.log(Launcher.offsetHeight * Math.sin(rotation/180 * Math.PI))
+				if(bulletHurt > 1){
+					bullet.style.background = 'url("https://bu.dusays.com/2022/01/19/9f77f145ec81d.png") -4px -2px / 18px no-repeat'
+				}else{
+					bullet.style.background = 'linear-gradient(to bottom, #ffee00, #ffe395)'
+				}
 				bullet.style['transform'] = bullet.style['-webkit-transform'] = 'rotate(' + rotation + 'deg)'
 		        bullet.style.left = LauncherX + Launcher.offsetHeight * Math.cos((90 - rotation)/180 * Math.PI) + 'px';//rotation == 0 ? LauncherX + 'px': rotation < 0 ? LauncherX - Math.sqrt(Math.pow(Launcher.offsetHeight * Math.sin(rotation/180 * Math.PI),2) + Math.pow(Launcher.offsetHeight,2) - 2 * Launcher.offsetHeight * Math.sin(rotation/180 * Math.PI) * Launcher.offsetHeight * Math.cos(rotation/180 * Math.PI)) + 'px':LauncherX + Math.sqrt(Math.pow(Launcher.offsetHeight * Math.sin(rotation/180 * Math.PI),2) + Math.pow(Launcher.offsetHeight,2) - 2 * Launcher.offsetHeight * Math.sin(rotation/180 * Math.PI) * Launcher.offsetHeight * Math.cos(rotation/180 * Math.PI)) + 'px';
 				bullet.style.top =  rotation < 0? wy - Launcher.offsetHeight - (Launcher.offsetHeight - 56) * Math.sin(rotation/180 * Math.PI) + 'px' : wy - Launcher.offsetHeight + (Launcher.offsetHeight - 56) * Math.sin(rotation/180 * Math.PI) + 'px'; // 
@@ -982,7 +1034,7 @@
 								showProp = 0;
 							}
 						}
-					} else if(frequency > 5 && frequency <= 10){
+					} else if(frequency > 5){
 						if(doubleHit % 10 == 0){
 							if(showProp > 0){
 								showProp = 2;
@@ -991,7 +1043,7 @@
 							}
 						}
 					}
-					monsterHpTxt = monsterHpTxt >= 365 ? 365 : monsterHpTxt + 1;
+					monsterHpTxt = monsterHpTxt >= 365 ? 365 : monsterHpTxt + bulletHurt;
 					monsterHP.innerText="2022福气:"+monsterHpTxt+"天";
 					monsterSpeed = .5;
 					setTimeout(function(){
@@ -1015,11 +1067,55 @@
 						//console.log(blessingNum)
 						if(blessingNum >= 3){
 							//audio.rate(10)
-							frequency <= 10 ? frequency += 1 : frequency = 10;
+							frequency <= 8 ? frequency += 1 : frequency = 8;
 							blessingY = 0;
 							blessingNum = 0; 
 							showProp = 1;
 							blessingProp.style.display = "none";
+						}
+					    imgF.className = 'imgF';
+					    imgF.style.left = bullet.offsetLeft + 'px';
+					    imgF.style.top = bullet.offsetTop + 'px';
+					    stage.appendChild(imgF);
+					    stage.removeChild(bullet)
+						setTimeout(function(){
+							stage.removeChild(imgF)
+						}, 650); 
+				  }else if(bullet.offsetTop <= boomMoster.offsetTop + boomMoster.offsetHeight/2 &&
+						bullet.offsetTop >= boomMoster.offsetTop && bullet.offsetLeft >= boomMoster.offsetLeft  && 
+						bullet.offsetLeft <= boomMoster.offsetLeft + monster.offsetWidth/2){
+					    var imgF = document.createElement('div');
+						doubleHit += 1;
+						boomMosterNum += 1;
+						switch(boomMosterNum){
+							case 2:
+								boomMoster.style.backgroundPosition = '-58px 6px'
+								break;
+							case 3:
+								boomMoster.style.backgroundPosition = '-124px 6px'
+								break;
+							case 4:
+								boomMoster.style.backgroundPosition = '6px -64px'
+								break;
+							case 5:
+								boomMoster.style.backgroundPosition = '-58px -64px'
+								break;
+							case 6:
+								boomMoster.style.backgroundPosition = '-124px -64px'
+								break;
+						}
+						//console.log(blessingNum)
+						if(boomMosterNum >= 6){
+							bulletHurt = 5;
+							setTimeout(function(){
+								bulletHurt = 1;
+							},6000);
+							//audio.rate(10)
+							//frequency <= 8 ? frequency += 1 : frequency = 8;
+							boomMosterY = 0;
+							boomMosterNum = 0; 
+							isBoomMoster = 1;
+							boomMoster.style.display = "none";
 						}
 					    imgF.className = 'imgF';
 					    imgF.style.left = bullet.offsetLeft + 'px';
@@ -1040,7 +1136,8 @@
 		      }
 		    };
 			//createBullet();
-			var blessingData = [];
+			
+			/* var blessingData = [];
 			const { Query, User } = AV;
 			var APP_ID = '1503RVl8u0Sqp7ssKnVDiIJi-gzGzoHsz';
 			var APP_KEY = 'avy3KAfLc6xrGxRxdOMrDvAG';
@@ -1059,6 +1156,7 @@
 				}) //attributes
 				showBullet();
 			});
+			 */
 			// var blessingData = [
 			//   {
 			// 	"name": "许昌人民",
@@ -1141,7 +1239,8 @@
 					let newYearMessage = new NewYearMessage();
 					newYearMessage.save({
 						words:words,
-						name:name
+						name:name,
+						timeUse:gameDuration
 					}).then(function(e){
 						alert('添加成功！')
 						saveFlag = true;
