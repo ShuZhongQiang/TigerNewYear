@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+		<title>排行榜</title>
+		<style>
+			body{
+				background-color: #f04b22;
+				color: #FFFFFF;
+				margin: 0;
+				padding: 0;
+			}
+			#back{
+				font-size: 14px;
+				line-height: 40px;
+				padding-left: 10px;
+				background-color: #df3d3d;
+				border-bottom: 1px solid;
+				position: fixed;
+				top: 0;
+				width: 100%;
+			}
+			#ph{
+				width: 100%;
+				margin: 40px 0;
+				padding: 0;
+			}
+			#ph li{
+				margin: 0;
+				padding: 6px 10px;
+				border-bottom: 1px solid #df3d3d;
+				list-style-type: none;
+				line-height: 28px;
+				font-size: 12px;
+			}
+			#ph li .rankNum{
+				color: #ffffff;
+			}
+			#ph li:nth-child(-n+3) .rankNum{
+				background-color: #ffc107;
+				color: #ffffff;
+				padding: 4px;
+				font-size: 14px;
+			}
+			#ph li:nth-child(2) .rankNum{
+				background-color: #bdbdbd;
+				color: #ffffff;
+				padding: 3px;
+			}
+			#ph li:nth-child(3) .rankNum{
+				background-color: #f17f5b;
+				color: #ffffff;
+				padding: 3px;
+			}
+			.rankName {
+			    padding: 0px 11px;
+			}
+			.rankTimeT {
+			    float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="back" onclick="bank()"><返回游戏</div>
+		<ul id="ph">
+			
+		</ul>
+		<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script>
+		<script src="js/message.js">
+	</body>
+</html>

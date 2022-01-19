@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+		<title>炸年兽大作战</title>
+		<style>
+			#stage{
+				width: 100%;
+			}
+			#monster {
+				width: 108px;
+				height: 108px;
+				/* background-color: red; */
+				background:url("https://bu.dusays.com/2022/01/17/fb22dbb7ded68.png") 0 0 no-repeat ;
+				background-size: 120% 148%;;
+				background-position: center center;
+				/* transform: rotateY(180deg); */
+				position: fixed;
+				top: 90px;
+				left: 0px;
+			}
+			.monster:after{
+			  content:'';
+			  position:absolute;
+			  z-index:1;
+			  top: 124px;
+			  left:12px;
+			  width:84px;
+			  height:10px;
+			  background:#eb6969;
+			  border-radius:100%;
+			}
+			#monsterHP{
+				width: 128px; 
+				color: #FFFFFF;
+				margin-top: -30px;
+				text-align: center;
+				font-weight: bold;
+			}
+			#doubleHit{
+				display: none;
+				width: 128px;
+				color: #FFEE00;
+				margin-top: -10px;
+				text-align: center;
+				font-size: 30px;
+				font-weight: bold;
+			}
+			#Launcher {
+				width: 128px;
+				height: 128px;
+				/* background-color: red; */
+				background: url("https://bu.dusays.com/2022/01/17/fc030923f46f3.png") 0 0 no-repeat;
+				/* background: url(allnormal.png); */
+				background-size: 100% 100%;
+				background-position: center center;
+				overflow: auto;
+				z-index: 9999;
+				position: fixed;
+				bottom: 0;
+				-moz-transform-origin: 50% 100%;
+				-webkit-transform-origin:50% 100%;
+				-o-transform-origin:50% 100%;
+			}
+			.bullet {
+			  position: absolute;
+			  width: 10px;
+			  height: 16px;
+			  background-image: linear-gradient(to bottom, #ffee00, #ffe395);
+			  /* border-radius: 50%; */
+			  /* background-size: 16px; */
+			  box-shadow: 0 0 5px #fff;
+			  -moz-transform-origin: 50% 50%;
+			  -webkit-transform-origin:50% 50%;
+			  -o-transform-origin:50% 50%;
+			}
+			.imgF {
+				position: absolute;
+				width: 64px;
+				height: 64px;
+				background: url("https://bu.dusays.com/2022/01/17/d9062a4e91968.png") 0 0 no-repeat;
+				-webkit-animation-iteration-count: 1;/* 动画播放 */
+				-webkit-animation-timing-function:step-start;/* 马上跳到动画每一结束桢的状态 */
+				-webkit-animation-name: person-fast;
+				-webkit-animation-duration: 650ms;
+			}
+			@-webkit-keyframes person-fast{/* 快 */
+			    0% {background-position: 0 0;}
+			    6.25% {background-position: -64px 0;}
+			    12.5% {background-position: -128px 0;}
+			    18.75% {background-position: -192px 0;}
+			    25% {background-position: -256px 0;}
+			    31.25% {background-position: -64px -64px;}
+			    37.5% {background-position: -128px -64px;}
+				43.75% {background-position: -192px -64px;}
+				50% {background-position: -256px -64px;}
+				56.25% {background-position: -64px -128px;}
+				62.50% {background-position: -128px -128px;}
+				69.75% {background-position: -192px -128px;}
+				75.25% {background-position: -256px -128px;}
+				81.25% {background-position: -64px -192px;}
+				87.5% {background-position: -128px -192px;}
+				93.75% {background-position: -192px -192px;}
+				100% {background-position: -256px -192px;}
+			}
+			body {
+				width: 100%;
+				background: url("https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg") no-repeat center center fixed;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+				overflow-x:hidden;
+				overflow-y:hidden;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			#LauncherHead{
+				background-color: #F4BD0A;
+				z-index: 9999;
+			}
+			#container {
+			    position: absolute;
+			    top: 50%;
+			    left: 50%;
+			    -webkit-transform: translate(-50%, -50%);
+			            transform: translate(-50%, -50%);
+			    width: 100%;
+			    height: 100%;
+			}
+			.firework-grp {
+			    display: block;
+			    width: 100%;
+			    height: 100%;
+			    position: absolute;
+			}
+			.firework {
+			    font-size: 10px;
+			    display: block;
+			    width: 8.5em;
+			    height: 8.5em;
+			    position: absolute;
+			}
+			#menu{
+				display:block;
+				position: fixed;
+				width: 100%;
+				height: auto;
+				left: 0;
+				top: 30%;
+				color: #fbff00;
+				background-color: rgb(145 11 11 / 63%);
+				text-align: center;
+				padding-top: 40px;
+				padding-bottom: 40px;
+			}
+			#menu button{
+				background-color: #ffa622;
+				color: #FFFFFF;
+				border: 1px solid #ffa622;
+				margin: 2%;
+			}
+			#blessingLayer{
+				display: none;
+				position: fixed;
+				width: 100%;
+				height: auto;
+				left: 0;
+				top: 20%;
+				color: #fbff00;
+				background-color: rgb(145 11 11 / 63%);
+				text-align: center;
+				padding-top: 40px;
+				padding-bottom: 40px;
+			}
+			#blessingLayer p{
+				margin: 10px;
+			}
+			#blessingProp{
+				display: none;
+				width: 64px;
+				position: fixed;
+			}
+			#boomMoster{
+				position: absolute;
+				display: none;
+				top: 10px;
+				left: 100px;
+				width: 64px;
+				height: 64px;
+				background: url("https://bu.dusays.com/2022/01/17/1d8422032171d.png") 20px 20px no-repeat;
+				z-index: 9999px;
+				background-position: 6px 6px;
+				background-size: 180px;
+			}
+			#showTime{
+				position: fixed;
+				left: 60px;
+				color: #FBFF00;
+				font-weight: bolder;
+			}
+			/*位置，颜色，大小都可调*/
+			.pos1 {
+			    left: 10%;
+			    top: 5%;
+			    color: #F44336;
+			    -webkit-transform: scale(0.5);
+			            transform: scale(0.5);
+			}
+			.pos2 {
+			    left: 65%;
+			    top: 10%;
+			    color: #FFC107;
+			    -webkit-transform: scale(0.6);
+			            transform: scale(0.6);
+			}
+			.pos3 {
+			    left: 60%;
+			    top: 35%;
+			    color: #F44336;
+			    -webkit-transform: scale(0.8);
+			            transform: scale(0.8);
+			}
+			.pos4 {
+			    left: 15%;
+			    top: 30%;
+			    color: #FFC107;
+			    -webkit-transform: scale(1);
+			            transform: scale(1);
+			}
+			/*烟花*/
+			.drops-grp {
+			    display: block;
+			    width: 8.5em;
+			    height: 8.5em;
+			    position: absolute;
+			}
+			.drops-grp2 {
+			    display: block;
+			    width: 8.5em;
+			    height: 8.5em;
+			    position: absolute;
+			    -webkit-transform: rotate(45deg);
+			            transform: rotate(45deg);
+			}
+			.drop {
+			    display: block;
+			    width: 1em;
+			    height: 2em;
+			    overflow: hidden;
+			    position: absolute;
+			    opacity: 0;
+			}
+			.drop:before {
+			    content: "";
+			    display: block;
+			    width: 1em;
+			    height: 1em;
+			    background: currentColor;
+			    border-radius: 50%;
+			}
+			 
+			.drop:after {
+			    content: "";
+			    display: block;
+			    position: relative;
+			    top: -0.4em;
+			    width: 0;
+			    height: 0;
+			    border-top: 1.4em solid currentColor;
+			    border-left: 0.5em solid transparent;
+			    border-right: 0.5em solid transparent;
+			}
+			/*烟花绽放的速度，次数，方式也可以调节*/
+			.drop-1 {
+			    left: 3.75em;
+			    top: 0;
+			    -webkit-animation: drop1anim 1.5s ease-in-out infinite;
+			            animation: drop1anim 1.5s ease-in-out infinite;
+			}
+			.drop-2 {
+			    top: 3.25em;
+			    right: 0;
+			    -webkit-animation: drop2anim 1.5s ease-in-out infinite;
+			            animation: drop2anim 1.5s ease-in-out infinite;
+			}
+			.drop-3 {
+			    left: 3.75em;
+			    bottom: 0;
+			    -webkit-animation: drop3anim 1.5s ease-in-out infinite;
+			            animation: drop3anim 1.5s ease-in-out infinite;
+			}
+			.drop-4 {
+			    top: 3.25em;
+			    left: 0;
+			    -webkit-animation: drop4anim 1.5s ease-in-out infinite;
+			            animation: drop4anim 1.5s ease-in-out infinite;
+			}
+			/*延迟时间*/
+			.delay1 .drop {
+			    -webkit-animation-delay: 0.5s;
+			            animation-delay: 0.5s
+			}
+			.delay2 .drop {
+			    -webkit-animation-delay: 1s;
+			            animation-delay: 1s
+			}
+			/*动画*/
+			@-webkit-keyframes drop1anim {
+			    0% {
+			        top: 3.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3);
+			                transform: scale(0.3);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1);
+			                transform: scale(1);
+			    }
+			    100% {
+			        top: -0.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3);
+			                transform: scale(0.3);
+			    }
+			}
+			 
+			@keyframes drop1anim {
+			    0% {
+			        top: 3.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3);
+			                transform: scale(0.3);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1);
+			                transform: scale(1);
+			    }
+			    100% {
+			        top: -0.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3);
+			                transform: scale(0.3);
+			    }
+			}
+			 
+			@-webkit-keyframes drop2anim {
+			    0% {
+			        right: 3.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(90deg);
+			                transform: scale(0.3) rotate(90deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(90deg);
+			                transform: scale(1) rotate(90deg);
+			    }
+			    100% {
+			        right: -0.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(90deg);
+			                transform: scale(0.3) rotate(90deg);
+			    }
+			}
+			 
+			@keyframes drop2anim {
+			    0% {
+			        right: 3.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(90deg);
+			                transform: scale(0.3) rotate(90deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(90deg);
+			                transform: scale(1) rotate(90deg);
+			    }
+			    100% {
+			        right: -0.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(90deg);
+			                transform: scale(0.3) rotate(90deg);
+			    }
+			}
+			 
+			@-webkit-keyframes drop3anim {
+			    0% {
+			        bottom: 3.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(180deg);
+			                transform: scale(0.3) rotate(180deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(180deg);
+			                transform: scale(1) rotate(180deg);
+			    }
+			    100% {
+			        bottom: -0.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(180deg);
+			                transform: scale(0.3) rotate(180deg);
+			    }
+			}
+			 
+			@keyframes drop3anim {
+			    0% {
+			        bottom: 3.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(180deg);
+			                transform: scale(0.3) rotate(180deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(180deg);
+			                transform: scale(1) rotate(180deg);
+			    }
+			    100% {
+			        bottom: -0.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(180deg);
+			                transform: scale(0.3) rotate(180deg);
+			    }
+			}
+			 
+			@-webkit-keyframes drop4anim {
+			    0% {
+			        left: 3.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(-90deg);
+			                transform: scale(0.3) rotate(-90deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(-90deg);
+			                transform: scale(1) rotate(-90deg);
+			    }
+			    100% {
+			        left: -0.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(-90deg);
+			                transform: scale(0.3) rotate(-90deg);
+			    }
+			}
+			 
+			@keyframes drop4anim {
+			    0% {
+			        left: 3.75em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(-90deg);
+			                transform: scale(0.3) rotate(-90deg);
+			    }
+			    25% {
+			        opacity: 0;
+			    }
+			    50% {
+			        opacity: 1;
+			        -webkit-transform: scale(1) rotate(-90deg);
+			                transform: scale(1) rotate(-90deg);
+			    }
+			    100% {
+			        left: -0.25em;
+			        opacity: 0;
+			        -webkit-transform: scale(0.3) rotate(-90deg);
+			                transform: scale(0.3) rotate(-90deg);
+			    }
+			}
+		</style>
+		<style>
+		.bullet-chat-wrap {
+		  position: fixed;
+		  top: 0;
+		  bottom: 0;
+		  right: 0;
+		  left: 0;
+		  z-index: -1;
+		}
+		.bullet-chat {
+		  position: absolute;
+		  white-space: nowrap;
+		  display: flex;
+		  align-items: center;
+		  color: rgba(255, 255, 255, .5);
+		  font-size: 16px;
+		  /* font-weight: bold; */
+		}
+		.layerInput{
+			width: 60%;
+		}
+		.layerSubmit{
+			
+		}
+		</style>
+	</head>
+	<body scroll="no">
+		<div id="container">
+		  <div class="firework-grp">
+		      <div class="firework pos1 ">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos2 delay1">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos3 delay2">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		      <div class="firework pos4 ">
+		          <div class="drops-grp">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		          <div class="drops-grp drops-grp2">
+		              <span class="drop drop-1"></span>
+		              <span class="drop drop-2"></span>
+		              <span class="drop drop-3"></span>
+		              <span class="drop drop-4"></span>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+		<div id="boomMoster"></div>
+		<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+		<div id="menu">
+			<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
+			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加子弹发射频率</p>
+			<p>2.年兽随机扔出小年兽，没有打中小年兽会减少子弹发射频率</p>
+			<p>3.游戏结束后可以提交自己的成绩到排行榜，和发送弹幕祝福哦</p>
+			<!-- <p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p> -->
+			<div>
+				<button onclick="startGame()">开始游戏</button>
+				<button onclick="rankFind()">查看榜单</button>
+				<button onclick="tooglePlay()">打开声音</button>
+			</div>
+		</div>
+		<div id="blessingLayer">
+			<h2>2022新年快乐</h2>
+			<p>
+				 您共花费了 <span id="blessingText"></span> 的时间击败了2022年的年兽，积攒了2022年365天的好福气！
+			</p>
+			<p>
+				作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
+			</p>
+			<p>
+				上传成绩并送弹幕祝福吧：
+			</p>
+			<form>
+			  <label for="fname">qq号：</label>
+			  <input id="qqId" class="layerInput" required="required"/><br>
+			  <label for="fname">尊姓大名：</label>
+			  <input id="name" class="layerInput" required="required"/><br>
+			  <label for="lname">祝福弹幕：</label>
+			  <input id="words" class="layerInput"  required="required"/><br>
+			  <!-- <input class="layerSubmit" type="submit" value="提交" onclick="saveInfo"> -->
+			</form> 
+			<p>
+				<button onclick="saveInfo()">提交</button>
+				<button onclick="rankFind()">查看榜单</button>前往作者主页<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a>
+			</p>
+			<!-- <p>
+				尊姓大名：<input id="name" class="layerInput" required="required"/>
+			</p>
+			<p>
+				祝福弹幕：<input id="words" class="layerInput"  required="required"/>
+			</p> -->
+			
+		</div>
+		<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
+		<!--舞台-->
+		<div id="stage">
+		<span id="showTime"></span>
+		<!--年兽-->
+		<div id="monster"  class="monster">
+			<div id="monsterText">
+				<p id="monsterHP"></p>
+				<p id="doubleHit">0次</p>
+			</div>
+			
+		</div>
+		<!--发射器-->
+		<div id="Launcher">
+			<div id="LauncherHead"></div>
+		</div>
+		
+		</div>
+		<div id="bulletChat" class="bullet-chat-wrap"></div>
+		<script src="js/howler.min.js"></script>
+		<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script>
+		<script src="js/index.js"></script>
+		<script>
+			 document.getElementsByTagName("img")[0].onload =function() {
+				document.getElementsByTagName("p")[0].innerHTML ='加载完成！';
+			}
+		</script>
+	</body>
+</html>
