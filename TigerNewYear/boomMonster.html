@@ -797,22 +797,23 @@
 		<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script>
 		<script src="js/index.js"></script>
 		<script>
-			 window.onload = function onloadImg(){
-			 			var img=new Image();
-			 			img.src='https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg';
-			 			console.log(img)
-			 			if(img.width==0){
-			 				//alert('图片加载失败')
-							window.requestAnimationFrame(onloadImg);
-			 			}else{
-							setTimeout(function () {
-							    // 这里就是处理的事件
-								document.getElementById('loadingOk').style.display = "inline-block";
-								document.getElementById('card').style.display = "none";
-							}, 2000);
-							window.cancelAnimationFrame(onloadImg);
-			 		}
+			function onloadImg(){
+					var img=new Image();
+					img.src='https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg';
+					console.log(img)
+					if(img.width==0){
+						//alert('图片加载失败')
+						window.requestAnimationFrame(onloadImg);
+					}else{
+						setTimeout(function () {
+							// 这里就是处理的事件
+							document.getElementById('loadingOk').style.display = "inline-block";
+							document.getElementById('card').style.display = "none";
+						}, 2000);
+						window.cancelAnimationFrame(onloadImg);
 				}
+			}
+			onloadImg();
 		</script>
 	</body>
 </html>
