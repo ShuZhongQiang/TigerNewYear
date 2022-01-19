@@ -5,6 +5,10 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 		<title>炸年兽大作战</title>
 		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
 			#stage{
 				width: 100%;
 			}
@@ -103,22 +107,6 @@
 				87.5% {background-position: -128px -192px;}
 				93.75% {background-position: -192px -192px;}
 				100% {background-position: -256px -192px;}
-			}
-			body {
-				width: 100%;
-				background: url("https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg") no-repeat center center fixed;
-				-webkit-background-size: cover;
-				-moz-background-size: cover;
-				-o-background-size: cover;
-				background-size: cover;
-				overflow-x:hidden;
-				overflow-y:hidden;
-				-webkit-touch-callout: none;
-				-webkit-user-select: none;
-				-khtml-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
 			}
 			#LauncherHead{
 				background-color: #F4BD0A;
@@ -519,136 +507,312 @@
 		.layerSubmit{
 			
 		}
+		@-moz-keyframes heartbeat-loader {
+		  0% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  14% {
+		    -moz-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  28% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  42% {
+		    -moz-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  70% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		}
+		@-webkit-keyframes heartbeat-loader {
+		  0% {
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  14% {
+		    -webkit-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  28% {
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  42% {
+		    -webkit-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  70% {
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		}
+		@keyframes heartbeat-loader {
+		  0% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    -ms-transform: rotate(45deg) scale(1);
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  14% {
+		    -moz-transform: rotate(45deg) scale(1.3);
+		    -ms-transform: rotate(45deg) scale(1.3);
+		    -webkit-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  28% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    -ms-transform: rotate(45deg) scale(1);
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		  42% {
+		    -moz-transform: rotate(45deg) scale(1.3);
+		    -ms-transform: rotate(45deg) scale(1.3);
+		    -webkit-transform: rotate(45deg) scale(1.3);
+		    transform: rotate(45deg) scale(1.3);
+		  }
+		  70% {
+		    -moz-transform: rotate(45deg) scale(1);
+		    -ms-transform: rotate(45deg) scale(1);
+		    -webkit-transform: rotate(45deg) scale(1);
+		    transform: rotate(45deg) scale(1);
+		  }
+		}
+		/* :not(:required) hides this rule from IE9 and below */
+		.heartbeat-loader:not(:required) {
+		  -moz-animation: heartbeat-loader 1300ms ease 0s infinite normal;
+		  -webkit-animation: heartbeat-loader 1300ms ease 0s infinite normal;
+		  animation: heartbeat-loader 1300ms ease 0s infinite normal;
+		  display: inline-block;
+		  position: relative;
+		  overflow: hidden;
+		  text-indent: -9999px;
+		  width: 36px;
+		  height: 36px;
+		  -moz-transform: rotate(45deg) scale(1);
+		  -ms-transform: rotate(45deg) scale(1);
+		  -webkit-transform: rotate(45deg) scale(1);
+		  transform: rotate(45deg) scale(1);
+		  -moz-transform-origin: 50% 50%;
+		  -ms-transform-origin: 50% 50%;
+		  -webkit-transform-origin: 50% 50%;
+		  transform-origin: 50% 50%;
+		}
+		.heartbeat-loader:not(:required):after, .heartbeat-loader:not(:required):before {
+		  position: absolute;
+		  content: "";
+		  background: #e87;
+		}
+		.heartbeat-loader:not(:required):before {
+		  -moz-border-radius-topleft: 12px;
+		  -webkit-border-top-left-radius: 12px;
+		  border-top-left-radius: 12px;
+		  -moz-border-radius-bottomleft: 12px;
+		  -webkit-border-bottom-left-radius: 12px;
+		  border-bottom-left-radius: 12px;
+		  top: 12px;
+		  left: 0;
+		  width: 36px;
+		  height: 24px;
+		}
+		.heartbeat-loader:not(:required):after {
+		  -moz-border-radius-topleft: 12px;
+		  -webkit-border-top-left-radius: 12px;
+		  border-top-left-radius: 12px;
+		  -moz-border-radius-topright: 12px;
+		  -webkit-border-top-right-radius: 12px;
+		  border-top-right-radius: 12px;
+		  top: 0;
+		  left: 12px;
+		  width: 24px;
+		  height: 12px;
+		}
+		.card{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+		}
+		.textLoding{
+			line-height: 50px;
+		}
+		#loadingOk{
+			display: none;
+			width: 100%;
+			background: url("https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg") no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			overflow-x:hidden;
+			overflow-y:hidden;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
 		</style>
 	</head>
 	<body scroll="no">
-		<div id="container">
-		  <div class="firework-grp">
-		      <div class="firework pos1 ">
-		          <div class="drops-grp">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		          <div class="drops-grp drops-grp2">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		      </div>
-		      <div class="firework pos2 delay1">
-		          <div class="drops-grp">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		          <div class="drops-grp drops-grp2">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		      </div>
-		      <div class="firework pos3 delay2">
-		          <div class="drops-grp">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		          <div class="drops-grp drops-grp2">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		      </div>
-		      <div class="firework pos4 ">
-		          <div class="drops-grp">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		          <div class="drops-grp drops-grp2">
-		              <span class="drop drop-1"></span>
-		              <span class="drop drop-2"></span>
-		              <span class="drop drop-3"></span>
-		              <span class="drop drop-4"></span>
-		          </div>
-		      </div>
-		  </div>
+		<div id="card" class="card">
+				<span class="heartbeat-loader">Loading&#8230;</span><br>
+				<span class="textLoding">加载中...</span>
 		</div>
-		<div id="boomMoster"></div>
-		<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
-		<div id="menu">
-			<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
-			<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加子弹发射频率</p>
-			<p>2.年兽随机扔出小年兽，没有打中小年兽会减少子弹发射频率</p>
-			<p>3.游戏结束后可以提交自己的成绩到排行榜，和发送弹幕祝福哦</p>
-			<!-- <p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p> -->
-			<div>
-				<button onclick="startGame()">开始游戏</button>
-				<button onclick="rankFind()">查看榜单</button>
-				<button onclick="tooglePlay()">打开声音</button>
+		<div id="loadingOk">
+			<div id="container">
+			  <div class="firework-grp">
+			      <div class="firework pos1 ">
+			          <div class="drops-grp">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			          <div class="drops-grp drops-grp2">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			      </div>
+			      <div class="firework pos2 delay1">
+			          <div class="drops-grp">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			          <div class="drops-grp drops-grp2">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			      </div>
+			      <div class="firework pos3 delay2">
+			          <div class="drops-grp">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			          <div class="drops-grp drops-grp2">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			      </div>
+			      <div class="firework pos4 ">
+			          <div class="drops-grp">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			          <div class="drops-grp drops-grp2">
+			              <span class="drop drop-1"></span>
+			              <span class="drop drop-2"></span>
+			              <span class="drop drop-3"></span>
+			              <span class="drop drop-4"></span>
+			          </div>
+			      </div>
+			  </div>
 			</div>
-		</div>
-		<div id="blessingLayer">
-			<h2>2022新年快乐</h2>
-			<p>
-				 您共花费了 <span id="blessingText"></span> 的时间击败了2022年的年兽，积攒了2022年365天的好福气！
-			</p>
-			<p>
-				作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
-			</p>
-			<p>
-				上传成绩并送弹幕祝福吧：
-			</p>
-			<form>
-			  <label for="fname">qq号：</label>
-			  <input id="qqId" class="layerInput" required="required"/><br>
-			  <label for="fname">尊姓大名：</label>
-			  <input id="name" class="layerInput" required="required"/><br>
-			  <label for="lname">祝福弹幕：</label>
-			  <input id="words" class="layerInput"  required="required"/><br>
-			  <!-- <input class="layerSubmit" type="submit" value="提交" onclick="saveInfo"> -->
-			</form> 
-			<p>
-				<button onclick="saveInfo()">提交</button>
-				<button onclick="rankFind()">查看榜单</button>前往作者主页<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a>
-			</p>
-			<!-- <p>
-				尊姓大名：<input id="name" class="layerInput" required="required"/>
-			</p>
-			<p>
-				祝福弹幕：<input id="words" class="layerInput"  required="required"/>
-			</p> -->
-			
-		</div>
-		<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
-		<!--舞台-->
-		<div id="stage">
-		<span id="showTime"></span>
-		<!--年兽-->
-		<div id="monster"  class="monster">
-			<div id="monsterText">
-				<p id="monsterHP"></p>
-				<p id="doubleHit">0次</p>
+			<div id="boomMoster"></div>
+			<img id="soundIcon" src="https://bu.dusays.com/2022/01/17/46d3ff9dc2db8.png" onclick="tooglePlay()" style="position: fixed;width: 24px;"/>
+			<div id="menu">
+				<p>游戏玩法：点击界面下面的爆竹，发射爆竹打年兽积攒福气，当福气积攒356天游戏结束！</p>
+				<p>1.连续打中年兽触发会随机出现锦囊，击中锦囊3下增加子弹发射频率</p>
+				<p>2.年兽随机扔出小年兽，没有打中小年兽会减少子弹发射频率</p>
+				<p>3.游戏结束后可以提交自己的成绩到排行榜，和发送弹幕祝福哦</p>
+				<!-- <p>3.彩蛋：游戏结束后连续击中年兽2022下可以找我来领红包</p> -->
+				<div>
+					<button onclick="startGame()">开始游戏</button>
+					<button onclick="rankFind()">查看榜单</button>
+					<button onclick="tooglePlay()">打开声音</button>
+				</div>
+			</div>
+			<div id="blessingLayer">
+				<h2>2022新年快乐</h2>
+				<p>
+					 您共花费了 <span id="blessingText"></span> 的时间击败了2022年的年兽，积攒了2022年365天的好福气！
+				</p>
+				<p>
+					作者：舒忠强 在这里祝您新的一年：心想事成，万事如意，财源滚滚，五虎起飞！
+				</p>
+				<p>
+					上传成绩并送弹幕祝福吧：
+				</p>
+				<form>
+				  <label for="fname">qq号：</label>
+				  <input id="qqId" class="layerInput" required="required"/><br>
+				  <label for="fname">尊姓大名：</label>
+				  <input id="name" class="layerInput" required="required"/><br>
+				  <label for="lname">祝福弹幕：</label>
+				  <input id="words" class="layerInput"  required="required"/><br>
+				  <!-- <input class="layerSubmit" type="submit" value="提交" onclick="saveInfo"> -->
+				</form> 
+				<p>
+					<button onclick="saveInfo()">提交</button>
+					<button onclick="rankFind()">查看榜单</button>前往作者主页<a href="https://szqlovegw.top/" style="color: #FBFF00;margin-left: 10px;">GO</a>
+				</p>
+				<!-- <p>
+					尊姓大名：<input id="name" class="layerInput" required="required"/>
+				</p>
+				<p>
+					祝福弹幕：<input id="words" class="layerInput"  required="required"/>
+				</p> -->
+				
+			</div>
+			<img id="blessingProp" src="https://bu.dusays.com/2022/01/17/7a56552b759ee.png"/>
+			<!--舞台-->
+			<div id="stage">
+			<span id="showTime"></span>
+			<!--年兽-->
+			<div id="monster"  class="monster">
+				<div id="monsterText">
+					<p id="monsterHP"></p>
+					<p id="doubleHit">0次</p>
+				</div>
+				
+			</div>
+			<!--发射器-->
+			<div id="Launcher">
+				<div id="LauncherHead"></div>
 			</div>
 			
+			</div>
+			<div id="bulletChat" class="bullet-chat-wrap"></div>
 		</div>
-		<!--发射器-->
-		<div id="Launcher">
-			<div id="LauncherHead"></div>
-		</div>
-		
-		</div>
-		<div id="bulletChat" class="bullet-chat-wrap"></div>
 		<script src="js/howler.min.js"></script>
-		<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script>
+		<!-- <script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-live-query-min.js"></script> -->
 		<script src="js/index.js"></script>
+		<script>
+			 window.onload = function onloadImg(){
+			 			var img=new Image();
+			 			img.src='https://bu.dusays.com/2022/01/17/e350a902c3f95.jpg';
+			 			console.log(img)
+			 			if(img.width==0){
+			 				//alert('图片加载失败')
+							window.requestAnimationFrame(onloadImg);
+			 			}else{
+							setTimeout(function () {
+							    // 这里就是处理的事件
+								document.getElementById('loadingOk').style.display = "inline-block";
+								document.getElementById('card').style.display = "none";
+							}, 2000);
+							window.cancelAnimationFrame(onloadImg);
+			 		}
+				}
+		</script>
 	</body>
 </html>
